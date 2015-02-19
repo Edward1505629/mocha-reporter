@@ -18,20 +18,27 @@ function Reporter(runner) {
         }
     });
 
-    runner.on('pass', function(test){
+    runner.on('test', function(test) {
         console.log('<IT::>' + format(test.title));
+    });
+
+    runner.on('test end', function(test) {
+        console.log("<COMPLETEDIN::>");
+    });
+
+    runner.on('pass', function(test){
         console.log('<PASSED::>Passed');
-        console.log('<COMPLETEDIN::>');
     });
 
     runner.on('fail', function(test, err){
-        console.log('<IT::>' + format(test.title));
         console.log('<FAILED::>' + format(err.message));
-        console.log('<COMPLETEDIN::>');
+    });
+
+    runner.on('error', function(test, err){
+        console.log('<ERROR::>' + format(err.message));
     });
 
     runner.on('end', function(){
-        console.log('<COMPLETEDIN::>');
         process.exit(0);
     });
 
