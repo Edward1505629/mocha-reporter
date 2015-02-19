@@ -7,21 +7,27 @@ function Reporter(runner) {
     var failures = 0;
 
     runner.on('suite', function(suite) {
-        console.log("<DESCRIBE::>" + format(suite.title));
+        if (suite.title) {
+            console.log("<DESCRIBE::>" + format(suite.title));
+        }
     });
 
     runner.on('suite end', function(suite) {
-        console.log("<COMPLETEDIN::>");
+        if (suite.title) {
+            console.log("<COMPLETEDIN::>");
+        }
     });
 
     runner.on('pass', function(test){
-        console.log('<IT::>' + format(test.fullTitle()));
+        console.log('<IT::>' + format(test.title));
         console.log('<PASSED::>Passed');
+        console.log('<COMPLETEDIN::>');
     });
 
     runner.on('fail', function(test, err){
-        console.log('<IT::>' + format(test.fullTitle()));
-        console.log('<PASSED::>' + format(err.message));
+        console.log('<IT::>' + format(test.title));
+        console.log('<FAILED::>' + format(err.message));
+        console.log('<COMPLETEDIN::>');
     });
 
     runner.on('end', function(){
