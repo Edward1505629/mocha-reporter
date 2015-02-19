@@ -15,7 +15,7 @@ function Reporter(runner) {
     });
 
     runner.on('end', function(){
-        console.log('yEAAAH');
+        console.log('11111');
         console.log('end: %d/%d', passes, passes + failures);
         process.exit(failures);
     });
