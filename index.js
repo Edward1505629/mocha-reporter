@@ -31,12 +31,12 @@ function Reporter(runner) {
     });
 
     runner.on('fail', function(test, err){
-        console.log(err);
-        console.log('<FAILED::>' + format(err.message));
-    });
+        if (err instanceof Error) {
+            console.log('<ERROR::>' + format(err.stack || err.toString()));
+        }else {
+            console.log('<FAILED::>' + format(err.message));
+        }
 
-    runner.on('error', function(test, err){
-        console.log('<ERROR::>' + format(err.message));
     });
 
     runner.on('end', function(){
