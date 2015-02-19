@@ -1,22 +1,35 @@
+var util = require('util');
+
 module.exports = Reporter;
 
 function Reporter(runner) {
     var passes = 0;
     var failures = 0;
 
+    runner.on('suite', function(suite) {
+        console.log("<DESCRIBE::>" + format(suite.title));
+    });
+
+    runner.on('suite end', function(suite) {
+        console.log("<COMPLETEDIN::>");
+    });
+
     runner.on('pass', function(test){
-        passes++;
-        console.log('pass: %s', test.fullTitle());
+        console.log('<IT::>' + format(test.fullTitle()));
+        console.log('<PASSED::>Passed');
     });
 
     runner.on('fail', function(test, err){
-        failures++;
-        console.log('fail: %s -- error: %s', test.fullTitle(), err.message);
+        console.log('<IT::>' + format(test.fullTitle()));
+        console.log('<PASSED::>' + format(err.message));
     });
 
     runner.on('end', function(){
-        console.log('11111');
-        console.log('end: %d/%d', passes, passes + failures);
-        process.exit(failures);
+        console.log('<COMPLETEDIN::>');
+        process.exit(0);
     });
+
+    function format(text) {
+        return text.replace(/\n/g, '<:LF:>');
+    }
 }
