@@ -31,6 +31,7 @@ function Reporter(runner) {
     });
 
     runner.on('fail', function(test, err){
+        console.log(err);
         console.log('<FAILED::>' + format(err.message));
     });
 
