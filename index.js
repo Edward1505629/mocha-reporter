@@ -1,10 +1,10 @@
-var util = require('util');
+var util = require('util'),
+    Base = require('mocha/lib/reporters/base');
 
 module.exports = Reporter;
 
 function Reporter(runner) {
-    var passes = 0;
-    var failures = 0;
+    Base.call(this, runner);
 
     runner.on('suite', function(suite) {
         if (suite.title) {
@@ -31,9 +31,13 @@ function Reporter(runner) {
     });
 
     runner.on('fail', function(test, err){
-        if (err instanceof Error) {
+        if (err instanceof Error && test.err.name != 'AssertionError') {
             console.log('<ERROR::>' + format(err.stack || err.toString()));
-        }else {
+        }
+        else if (test.timedOut) {
+            console.log('<FAILED::>' + 'Timed out');
+        }
+        else {
             console.log('<FAILED::>' + format(err.message));
         }
 
